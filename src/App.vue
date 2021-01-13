@@ -1,10 +1,16 @@
 <template>
   <div id="app">
-    <p>hello vue3.0</p>
+    <main-tab-bar></main-tab-bar>
+    <router-view></router-view>
   </div>
 </template>
 
-
+<script>
+import MainTabBar from 'components/content/MainTabBar.vue'
+export default {
+  components: { MainTabBar }
+}
+</script>
 <style lang="less">
-  @import "assets/css/base.css";
+  @import "assets/css/base.less";
 </style>

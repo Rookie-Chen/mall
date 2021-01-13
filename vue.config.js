@@ -8,9 +8,15 @@ module.exports = {
     config
       .resolve.alias
       .set('@', resolve('src'))
-      .set('assets', resolve('@/assets'))
-      .set('components', resolve('@/components'))
-      .set('views', resolve('@/views'))
-      .set('network',resolve('@/network'))
+      .set('assets', resolve('src/assets'))
+      .set('components', resolve('src/components'))
+      .set('views', resolve('src/views'))
+      .set('network', resolve('src/network'))
+  },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, "./src/assets/css/base.less")] // 引入全局样式变量
+    }
   }
 }
