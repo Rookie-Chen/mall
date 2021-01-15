@@ -7,11 +7,28 @@ export function getHomeData(){
   })
 }
 
-export function getHomeGoods(){
-  
+export function getHomeGoods(type,page){
+  return request({
+    url: '/home/data',
+    params: {
+      type,
+      page
+    }
+  })
 }
+
+export function getDogs(page,pageSize){
+  return demo({
+    url: '/queryDogList?apiKey=8uAHwa88bf5373447ed01a3f707b354b1b12061b80ef878',
+    params: {
+      page,
+      pageSize
+    }
+  })
+}
+
 export function dataDemo(){
   return demo({
-    url: '/vue/mock.json'
+    url: '/dog.json'
   })
 }

@@ -33,6 +33,7 @@ export default {
   methods: {
     itemClick(index){
       this.count = index;
+      this.$emit('tabClick',index)
     }
   }
 }

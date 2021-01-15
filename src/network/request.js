@@ -4,7 +4,8 @@ import axios from 'axios'
 export function request(config) {
   // 1.创建axios实例
   const instance = axios.create({
-    baseURL: 'http://123.207.32.32:8000',
+    baseURL: "http://152.136.185.210:7878/api/m5",
+    // baseURL: 'http://123.207.32.32:8000',
     timeout: 5000
   });
   // 2.拦截
@@ -27,10 +28,17 @@ export function request(config) {
 }
 
 // 导出其他请求接口
+// export function demo(config){
+//   const instance = axios.create({
+//     baseURL: 'https://api.apishop.net/common/dogFamily',
+//     timeout: 5000
+//   });
+//   return instance(config); 
+// }
 export function demo(config){
   const instance = axios.create({
-    baseURL: 'http://127.0.0.1/',
-    timeout: 1000
+    baseURL: 'http://127.0.0.1/vue',
+    timeout: 5000
   });
   return instance(config); 
 }

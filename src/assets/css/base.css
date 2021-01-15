@@ -29,7 +29,7 @@ a {
   color: var(--color- text);
   text-decoration: none ;
 }
-.clear-fix::after {
+.clear::after {
   clear: both;
   content: '';
   display: block ;
@@ -37,7 +37,7 @@ a {
   height: 0;
   visibility: hidden;
 }
-.clear-fix {
+.clear {
   zoom: 1 ;
 }
 .left {
