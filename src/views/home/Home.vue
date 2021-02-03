@@ -5,26 +5,39 @@
         <p>购物街</p>
       </template>
     </nav-bar>
-    <swiper :banners="banners"></swiper>
-    <home-recommend :list="recommend"></home-recommend>
-    <tabs
-      :titles="['流行', '新款', '精选']"
-      class="tab-fix"
-      @tabClick="tabClick"
-    ></tabs>
-    <goods-list :goods="showData"></goods-list>
+    <scroll
+      class="con"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="scroll"
+      :pull-up-load="true"
+      @pullingUp="loadMore"
+    >
+      <swiper :banners="banners"></swiper>
+      <home-recommend :list="recommend"></home-recommend>
+      <tabs
+        :titles="['流行', '新款', '精选']"
+        class="tab-fix"
+        @tabClick="tabClick"
+      ></tabs>
+      <goods-list :goods="showData"></goods-list>
+    </scroll>
+    <back-top @click.native="backClick" v-show="backBol"></back-top>
   </div>
 </template>
 
 <script>
 // 引入home.js返回的数据方法
 import { getHomeData, getHomeGoods } from 'network/home'
-// 引入组件
+// 引入公共组件
 import NavBar from 'components/common/navbar/NavBar'
 import Swiper from 'components/common/swiper/Swiper'
 import Tabs from 'components/content/tabs/Tabs'
-import goodsList from 'components/content/goods/goodsList'
+import Scroll from 'components/common/scroll/Scroll.vue'
+import BackTop from 'components/content/backTop/backTop.vue'
+import { debounce } from '@/common/utils'
 
+import goodsList from 'components/content/goods/goodsList'
 import HomeRecommend from './childComp/homeRecommend'
 
 export default {
@@ -39,6 +52,7 @@ export default {
         'sell': { page: 0, list: [] },
       },
       curItem: 'pop',
+      backBol: false, // 是否显示返回顶部
     }
   },
   components: {
@@ -46,7 +60,9 @@ export default {
     Swiper,
     HomeRecommend,
     Tabs,
-    goodsList
+    goodsList,
+    Scroll,
+    BackTop
   },
   methods: {
     /**  
@@ -65,20 +81,31 @@ export default {
           break;
       }
     },
+    backClick() {
+      this.$refs.scroll.backTop(0, 0, 500)
+    },
+    scroll(position) {
+      this.backBol = (-position.y) > 1000 ? true : false
+    },
+    loadMore() { // 上拉加载
+      this.getHomeGoods(this.curItem);
+    },
     /**
      * 网络请求
      **/
-    getHomeData() {
+    getHomeData() { // banner 和 推荐
       getHomeData().then(res => {
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
       })
     },
-    getHomeGoods(type) {
+    getHomeGoods(type) { // 首页商品列表
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1;
+        // 结束此次上拉加载
+        this.$refs.scroll.finishPullUp()
       })
     }
   },
@@ -94,6 +121,13 @@ export default {
     this.getHomeGoods('pop');
     this.getHomeGoods('new');
     this.getHomeGoods('sell');
+  },
+  mounted() {
+    // 监听item的图片加载情况
+    const refresh = debounce(this.$refs.scroll.refresh, 100)
+    this.$bus.$on('load', () => {
+      refresh();
+    })
   }
 }
 
@@ -101,6 +135,7 @@ export default {
 
 <style lang='less' scoped>
 .home {
+  height: 100vh;
   .h-bg {
     background-color: @color;
     color: #fff;
@@ -112,6 +147,11 @@ export default {
     position: sticky;
     top: 44px;
     background-color: #fff;
+  }
+  .con {
+    height: calc(100% - 93px);
+    overflow: hidden;
+    position: relative;
   }
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <a :href="value.clientUrl" class="good-item">
     <div class="img">
-      <img :src="value.show.img" alt="" />
+      <img :src="value.show.img" alt=""  @load="imageLoad" />
     </div>
     <p class="cn">{{ value.title }}</p>
     <div class="text clear">
       <p class="left price">{{ value.price }}</p>
-      <p class="col">
+      <!-- <p class="col">
         <img :src="value.ptpC" alt="">
-      </p>
+      </p> -->
     </div>
   </a>
 </template>
@@ -26,6 +26,11 @@ export default {
     }
   },
   components: {
+  },
+  methods: {
+    imageLoad(){
+      this.$bus.$emit("load")
+    }
   }
 }
 </script>
