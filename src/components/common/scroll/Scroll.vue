@@ -46,8 +46,6 @@ export default {
     // 3.监听上拉加载
     if (this.pullUpLoad) {
       this.scroll.on('pullingUp', () => {
-        console.log(1111)
-        console.log('上拉加载更多')
         this.$emit('pullingUp')
       })
     }
@@ -60,8 +58,13 @@ export default {
       this.scroll && this.scroll.finishPullUp();
     },
     refresh() {
-      console.log('---')
       this.scroll && this.scroll.refresh();
+    },
+    getScrollY(){
+      return this.scroll ? this.scroll.y : 0
+    },
+    scrollTo(x,y,time){
+      this.scroll.scrollTo(x,y,time)
     }
   }
 }

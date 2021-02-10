@@ -1,15 +1,7 @@
 <template>
   <div v-swiper:mySwiper="swiperOption">
     <div class="swiper-wrapper">
-      <a
-        :href="item.link"
-        class="swiper-slide"
-        :key="item.link"
-        v-for="item in banners"
-      >
-        <img :src="item.image" />
-        <slot></slot>
-      </a>
+      <slot></slot>
     </div>
     <div class="swiper-pagination"></div>
   </div>
@@ -39,6 +31,11 @@ export default {
           }
         }
       }
+    }
+  },
+  data() {
+    return {
+      isLoad: false
     }
   },
   components: {

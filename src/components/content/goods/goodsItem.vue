@@ -1,5 +1,5 @@
 <template>
-  <a :href="value.clientUrl" class="good-item">
+  <div class="good-item" @click="jump">
     <div class="img">
       <img :src="value.show.img" alt=""  @load="imageLoad" />
     </div>
@@ -10,7 +10,7 @@
         <img :src="value.ptpC" alt="">
       </p> -->
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -30,6 +30,10 @@ export default {
   methods: {
     imageLoad(){
       this.$bus.$emit("load")
+    },
+    // 跳转到详情
+    jump(){
+      this.$router.push('/detail/'+this.value.iid)
     }
   }
 }

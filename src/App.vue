@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <main-tab-bar></main-tab-bar>
-    <router-view></router-view>
+    <keep-alive exclude="Detail">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -12,5 +14,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "assets/css/base.less";
+@import "assets/css/base.less";
 </style>

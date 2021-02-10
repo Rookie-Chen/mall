@@ -10,11 +10,12 @@ VueRouter.prototype.push = function push(location) {
 const Cart = () => import('views/cart/Cart')
 const Category = () => import('views/category/Category')
 const Profile = () => import('views/profile/Profile')
+const Detail = () => import('views/detail/Detail')
 
 const routes = [
   {
     path: '',
-    redirect: '/category'
+    redirect: '/cart'
   },
   {
     path: '/home',
@@ -35,6 +36,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/detail/:id',
+    name: 'Detail',
+    component: Detail
   }
 ]
 

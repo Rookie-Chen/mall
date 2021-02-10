@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="nav-bar" :style="{'background-color':bgColor}">
-      <div class="left">
+      <div class="left" @click="backClick">
         <slot name="left"></slot>
       </div>
       <div class="center">
@@ -22,6 +22,11 @@ export default {
   },
   data() {
     return {
+    }
+  },
+  methods: {
+     backClick() {
+      this.$router.back()
     }
   }
 }
