@@ -1,7 +1,7 @@
 <template>
   <div class="good-item" @click="jump">
     <div class="img">
-      <img :src="value.show.img" alt=""  @load="imageLoad" />
+      <img :src="imgSrc" alt="" @load="imageLoad" />
     </div>
     <p class="cn">{{ value.title }}</p>
     <div class="text clear">
@@ -27,13 +27,26 @@ export default {
   },
   components: {
   },
+  computed: {
+    imgSrc() {
+      return this.value.image || this.value.show.img
+    }
+  },
   methods: {
-    imageLoad(){
-      this.$bus.$emit("load")
+    imageLoad() {
+      // 1.当不同页面使用此组件时需要按路由来区分刷新对应的页面
+      // if (this.$route.path.indexOf('/home')) {
+      //   this.$bus.$emit("homeLoad");
+      // } else if (this.$route.path.indexOf('/detail')) {
+      //   this.$bus.$emit("detailLoad")
+      // }
+
+      // 2.使用混入 mixin，只发射一个事件
+      this.$bus.$emit("itemImgLoad")
     },
     // 跳转到详情
-    jump(){
-      this.$router.push('/detail/'+this.value.iid)
+    jump() {
+      this.$router.push('/detail/' + this.value.iid)
     }
   }
 }
@@ -53,12 +66,12 @@ export default {
     .over-one();
     font-weight: bold;
   }
-  .en{
+  .en {
     font-size: 12px;
     color: #333;
     height: 24px;
   }
-  .text{
+  .text {
     color: @color;
     font-size: 14px;
     height: 24px;

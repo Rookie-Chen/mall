@@ -36,7 +36,8 @@ export default {
   },
   methods: {
     itemClick(index) {
-      this.curIndex = index
+      this.curIndex = index,
+      this.$emit('navTab',this.curIndex)
     }
   }
 }

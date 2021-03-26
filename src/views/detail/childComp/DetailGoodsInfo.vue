@@ -1,15 +1,14 @@
 <template>
-  <div class="detail-info">
-    <p>{{detailInfo}}</p>
-    <p class="desc">{{ typeof (detailInfo[0].desc) == 'undefined' ? '': detailInfo[0].desc}}</p>
-    <p class="key">{{ detailInfo[0].key }}</p>
+  <div class="detail-info" v-if="Object.keys(detailInfo).length !== 0">
+    <p class="des">{{ detailInfo.desc }}</p>
+    <p class="key">{{ detailInfo.detailImage[0].key }}</p>
     <div class="list">
       <img
         :src="item"
         alt=""
-        v-for="(item, index) in detailInfo[0].list"
+        v-for="(item, index) in detailInfo.detailImage[0].list"
         :key="index"
-        @load="imageLoad(count)"
+        @load="imageLoad"
       />
     </div>
   </div>
@@ -20,9 +19,9 @@ export default {
   name: 'DetailGoodsInfo',
   props: {
     detailInfo: {
-      type: Array,
+      type: Object,
       default() {
-        return []
+        return {}
       }
     }
   },
@@ -30,29 +29,40 @@ export default {
     return {
       count: 0,
       imgLength: 0,
-      num: 5
     }
   },
   components: {
   },
   methods: {
-    imageLoad(count) {
-      this.$emit('detailLoad',count)
+    imageLoad() {
+      // 避免多次发送事件
+      /* if (++this.count === this.imgLength) {
+        this.$emit('detailLoad')
+      } */
+      this.$emit('detailLoad')
     }
   },
   watch: {
-    lenFun() {
-      this.imgLength = this.detailInfo.list.length
-      console.log(this.imgLength)
+    detailInfo() {
+      this.imgLength = this.detailInfo.detailImage[0].list.length
     }
   }
 }
 </script>
 
 <style scoped lang="less">
-.list{
-  img{
-    width: 100%;
+.detail-info {
+  border-bottom: 5px solid #eee;
+  .des,
+  .key {
+    padding: 10px;
+    color: #666;
+    font-size: 14px;
+  }
+  .list {
+    img {
+      width: 100%;
+    }
   }
 }
 </style>

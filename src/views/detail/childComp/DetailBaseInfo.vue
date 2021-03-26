@@ -13,8 +13,9 @@
     </div>
     <div class="service">
       <p v-for="i in 3" :key="i">
-        <img :src="goods.services[i].icon" alt="">
-        <span>{{goods.services[i].name}}</span>
+        
+        <img :src="goods.services[i].icon || '111'" alt="" />
+        <span>{{ goods.services[i].name }}</span>
       </p>
     </div>
   </div>
@@ -34,6 +35,11 @@ export default {
   },
   data() {
     return {
+    }
+  },
+  computed: {
+    showIcon() {
+      return goods.services || ''
     }
   },
   components: {
@@ -92,13 +98,13 @@ export default {
     justify-content: space-between;
     padding: 20px 0;
     font-size: 14px;
-    img{
+    img {
       width: 16px;
       display: inline-block;
       vertical-align: middle;
       margin-right: 3px;
     }
-    span{
+    span {
       display: inline-block;
       vertical-align: middle;
     }

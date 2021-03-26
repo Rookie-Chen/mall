@@ -27,7 +27,7 @@
           :key="item + index"
         >
           <a :href="item.link">
-            <img :src="item.image" alt="" @load="loadIamge"/>
+            <img :src="item.image" alt="" @load="loadIamge" />
           </a>
         </div>
       </swiper>
@@ -51,11 +51,13 @@ import NavBar from 'components/common/navbar/NavBar'
 import Swiper from 'components/common/swiper/Swiper'
 import Tabs from 'components/content/tabs/Tabs'
 import Scroll from 'components/common/scroll/Scroll.vue'
-import BackTop from 'components/content/backTop/backTop.vue'
+
 import { debounce } from '@/common/utils'
+import { itemListenerMixin,goTopMixin } from 'common/mixin'
 
 import goodsList from 'components/content/goods/goodsList'
 import HomeRecommend from './childComp/homeRecommend'
+
 
 export default {
   name: 'Home',
@@ -69,20 +71,19 @@ export default {
         'sell': { page: 0, list: [] },
       },
       curItem: 'pop',
-      backBol: false, // 是否显示返回顶部
       tabOffsetTop: 0,
       isFix: false,
       saveY: 0, // 保存位置
     }
   },
+  mixins: [itemListenerMixin,goTopMixin],
   components: {
     NavBar,
     Swiper,
     HomeRecommend,
     Tabs,
     goodsList,
-    Scroll,
-    BackTop
+    Scroll
   },
   methods: {
     /**  
@@ -100,12 +101,10 @@ export default {
           this.curItem = 'sell';
           break;
       }
-      this.$refs.tabs1.count = index;
-      this.$refs.tabs2.count = index;
+      // 点击时同时給2个tab赋值当前选中
+      this.$refs.tabs1.count = this.$refs.tabs2.count = index;
     },
-    backClick() {
-      this.$refs.scroll.backTop(0, 0, 500)
-    },
+  
     scroll(position) {
       // 滚动事件：1.根据滚动位置判断返回顶部是否显示
       this.backBol = (-position.y) > 1000
@@ -153,19 +152,17 @@ export default {
     this.getHomeGoods('sell');
   },
   mounted() {
-    // 监听item的图片加载情况
-    const refresh = debounce(this.$refs.scroll.refresh, 100)
-    this.$bus.$on('load', () => {
-      refresh();
-    })
   },
   // 除了使用keep-alive,还需处理切换页面保存位置的bug
   activated() { // 进入时触发
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
     this.$refs.scroll.refresh();
   },
-  deactivated() { // 离开时触发
+  deactivated() {
+    // 离开时触发
     this.saveY = this.$refs.scroll.getScrollY();
+    this.$bus.$off('itemImgLoad')
+    console.log('离开首页')
   }
 }
 

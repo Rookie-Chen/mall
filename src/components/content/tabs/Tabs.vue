@@ -31,9 +31,9 @@ export default {
   components: {
   },
   methods: {
-    itemClick(index){
+    itemClick(index) {
       this.count = index;
-      this.$emit('tabClick',index)
+      this.$emit('tabClick', index)
     }
   }
 }
@@ -51,7 +51,7 @@ export default {
     line-height: 30px;
     font-size: 14px;
     position: relative;
-    .txt{
+    .txt {
       padding: 0 3px 5px;
     }
     &.cur {
